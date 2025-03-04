@@ -1,9 +1,9 @@
 template <typename T>
 struct Node{
-    T value;                          // Значение узла
-    Node* left;                         // указатель на левый узел
-    Node* right;                        // Указатель на правый узел
-    int height;                         // высота узла
+    T value;                            // Node value
+    Node* left;                         // Pointer to the left node
+    Node* right;                        // Pointer to the right node
+    int height;                         // Node height
 
     Node(T value){
         this->value = value;

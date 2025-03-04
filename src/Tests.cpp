@@ -153,7 +153,15 @@ TEST_F(TreeTest, TreeTest) {
            
     program_answers[0] = tree1->NumberOfSegmentElements(root, 1.0, 31.0);
     program_answers[1] = tree1->NumberOfSegmentElements(root, 60.0, 90.0);
-    
+
+    Tree<double> tree_add;
+
+
+    Node<double>* root1 = nullptr;
+    root1 = tree_add.Insert(root1, 2.0);
+    root1 = tree_add.Insert(root1, 3.0);
+    root1 = tree_add.Insert(root1, 1.0);
+
     root = tree1->Insert(root, 30.0);
     root = tree1->Insert(root, 40.0);
     
@@ -173,7 +181,7 @@ TEST_F(TreeTest, TreeTest) {
     std::uniform_int_distribution<int> dist(1, 10000);
     
     Node<int>* root = nullptr;
-    const int N = 1000;
+    const int N = 1000000;
     
     std::vector<int> mas;
     for (int i = 0; i < N; i++){
@@ -203,7 +211,7 @@ TEST_F(TreeTest, TreeTest) {
 
 // ----------------------------------------------------
 // ----------------------------------------------------
-// ---------------------- Vector ----------------------
+// ------------------ Priority Queue ------------------
 
 class PriorityQueueTest : public::testing::Test{
 protected:
@@ -249,10 +257,8 @@ TEST_F(PriorityQueueTest, Priority_Queue_double_Test) {
     for (int i = 0; i < 6; i++) {
         EXPECT_EQ(size_results[i], size_answers[i]);
         EXPECT_EQ(empty_results[i], empty_answers[i]);
-        if (i != 5){
-            //EXPECT_EQ(top_results[i], top_answers[i]);
-        }
     }
+
     EXPECT_EQ(q_double->Contains(4.0), true);
     q_double->Pop(4.0);
     EXPECT_EQ(q_double->Contains(4.0), false);
@@ -271,7 +277,8 @@ TEST_F(PriorityQueueTest, Priority_Queue_double_Test) {
     add_q.Push(10.0);
     add_q.Push(0.0);
 
-    q_double->Merge(add_q);
+    q_double->Merge(add_q); // replace: q_double = q_double + add_q
+    
 
     EXPECT_EQ(q_double->Size(), 4);
     EXPECT_EQ(q_double->Find(10.0)->value, 10.0);
@@ -280,6 +287,7 @@ TEST_F(PriorityQueueTest, Priority_Queue_double_Test) {
     q_double->Clear();
     EXPECT_EQ(q_double->Size(), 0);
     EXPECT_EQ(q_double->Empty(), true);
+    
 }
 
 TEST_F(PriorityQueueTest, Priority_Queue_string_Test) {
@@ -303,14 +311,10 @@ TEST_F(PriorityQueueTest, Priority_Queue_string_Test) {
         empty_results[i+1] = q_string->Empty();
         top_results[i] = q_string->Top()->value;
     }
-    
 
     for (int i = 0; i < 6; i++) {
         EXPECT_EQ(size_results[i], size_answers[i]);
         EXPECT_EQ(empty_results[i], empty_answers[i]);
-        if (i != 5){
-            //EXPECT_EQ(top_results[i], top_answers[i]);
-        }
     }
     EXPECT_EQ(q_string->Contains("A"), true);
     q_string->Pop("A");
@@ -346,15 +350,15 @@ TEST_F(PriorityQueueTest, Priority_Queue_string_Test) {
 TEST_F(PriorityQueueTest, Priority_Queue_Million_Test) {  
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(1, 100);
+    std::uniform_int_distribution<int> dist(1, 10000);
         
     std::vector<int> mas;
-    for (int i = 0; i < 1000; i++){
+    for (int i = 0; i < 1000000; i++){
         mas.push_back(dist(gen));
     }
 
     clock_t start = clock();    
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 1000000; i++) {
         q_mil->Push(mas[i]);
     }
     
@@ -363,7 +367,6 @@ TEST_F(PriorityQueueTest, Priority_Queue_Million_Test) {
     
     ASSERT_TRUE(time < 1);
 }
-
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);   

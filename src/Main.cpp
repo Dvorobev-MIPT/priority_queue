@@ -10,9 +10,7 @@ int main(){
     q.Push(3.0);
     q.Push(10.0);
     q.Push(1.0);
-    /*
-    ошибка при удалении root(((
-    */
+
     std::cout << "Empty 2: " << q.Empty() << std::endl;
     std::cout << "Size 1: " << q.Size() << std::endl;
     q.Pop(3.0);

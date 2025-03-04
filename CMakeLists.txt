@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.14)
 project(my_project)
 
 # GoogleTest requires at least C++14
-set(CMAKE_CXX_FLAGS "-std=c++20 -O3 -g -Wall")
+set(CMAKE_CXX_FLAGS "-std=c++20 -O2 -g")
 
 include(FetchContent)
 FetchContent_Declare(

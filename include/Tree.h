@@ -4,8 +4,6 @@
 #include "Node.h"
 #include <iostream>
 
-// use int tree for prioritets
-
 template <typename T>
 class Tree{
 private:
@@ -37,9 +35,7 @@ public:
 
     void DeleteTree(Node<T>* node);
 
-    ~Tree() = default;
-
-    //Node<T>* GetRoot();
+    ~Tree();
 
     Node<T>* Find(Node<T>* root, T value);
 

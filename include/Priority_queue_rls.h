@@ -9,59 +9,64 @@ template <typename T>
 PriorityQueue<T>::PriorityQueue(): root(nullptr), size(0){}
 
 template <typename T>
-void PriorityQueue<T>::Push(T elem){ //inserts element and sorts the underlying container
+void PriorityQueue<T>::Push(T elem){    // Inserts element and sorts the underlying container
     root = tree.Insert(root, elem);
-    size += 1;
+    size++;
 }        
-
-//template <typename T>
-//void PriorityQueue<T>::PushRange(T* begin, T* end){}   //inserts a range of elements and sorts the underlying container
-// operator = 
-
+    
 template <typename T>
-Node<T>* PriorityQueue<T>::Top(){         //accesses the top element
+Node<T>* PriorityQueue<T>::Top(){       // Accesses the top element
     return tree.GetMax(root);
 }
 
 template <typename T>
-bool PriorityQueue<T>::Empty(){       // checks whether the container adaptor is empty
+bool PriorityQueue<T>::Empty(){         // Checks whether the container adaptor is empty
     if (size == 0) return true;
     else return false;
 }
 
 template <typename T>
-int PriorityQueue<T>::Size(){        // returns the number of elements
+int PriorityQueue<T>::Size(){           // Returns the number of elements
     return size;
 }
 
 template <typename T>
-void PriorityQueue<T>::PopTop(){     // removes the top element
-    root = tree.Pop(root, tree.GetMax(root)->value);
-    size--;
+void PriorityQueue<T>::PopTop() {
+    if (root != nullptr) {
+        root = tree.Pop(root, tree.GetMax(root)->value);
+        size--;
+    }
 }
 
 template <typename T>
-void PriorityQueue<T>::Pop(T value){         // removes some element
-    root = tree.Pop(root, value);
-    if (root != nullptr) size--;
+void PriorityQueue<T>::Pop(T value){    // Removes some element
+    if (root != nullptr){
+        root = tree.Pop(root, value);
+        size--;
+    }
 }
 
 template <typename T>
-void PriorityQueue<T>::Merge(PriorityQueue& other){
-    root = other.tree.Merge(root, other.root);
-    size += other.size;
+void PriorityQueue<T>::Merge(PriorityQueue& other) {
+    if (other.root != nullptr) {
+        root = tree.Merge(root, other.root);
+        size += other.size;
+    }
 }
-
 template <typename T>
 void PriorityQueue<T>::Print(){
-    tree.PrintTree(root);
-    std::cout << std::endl;
+    if (root != nullptr){
+        tree.PrintTree(root);
+        std::cout << std::endl;
+    }
 }
 
 template <typename T>
-
 Node<T>* PriorityQueue<T>::Find(T value){
-    return tree.Find(root, value);
+    if (root != nullptr){
+        return tree.Find(root, value);
+    }
+    return nullptr;
 }
 
 template <typename T>
@@ -72,15 +77,20 @@ bool PriorityQueue<T>::Contains(T value){
 
 template <typename T>
 void PriorityQueue<T>::Clear(){
-    tree.DeleteTree(root);
-    root = nullptr;
+    if (root != nullptr) {
+        tree.DeleteTree(root);
+        root = nullptr;
+    }
     size = 0;
 }
 
 template <typename T>
 PriorityQueue<T>& PriorityQueue<T>::operator=(const PriorityQueue<T>& other) {
-    this->size = other.size;
-    root = other.root;
+    if (this != &other) {                       // Checking the self-sealing
+        Clear();                                // Clearing the current queue
+        root = tree.Merge(nullptr, other.root); // Copy elements
+        size = other.size;                      // Copy size
+    }
     return *this;
 }
 
@@ -92,17 +102,5 @@ PriorityQueue<T> PriorityQueue<T>::operator+(PriorityQueue<T>& other){
     result.size = this->size + other.size;
     return result;
 }
-
-/*
-template <typename T>
-PriorityQueue<T>::~PriorityQueue(){
-    tree.DeleteTree(root); // Удаляем все узлы дерева
-    root = nullptr;
-    size = 0;
-}
-*/
-
-//template <typename T>
-//void PriorityQueue<T>::Swap(){}          // swaps the contents
 
 #endif

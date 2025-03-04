@@ -8,8 +8,8 @@ Vector<T>::Vector() : size(0), capacity(1) {
 
 template <typename T>
 Vector<T>::~Vector(){
-    delete[] array; // Освобождение памяти
-    array = nullptr; // Установка указателя в nullptr для предотвращения двойного освобождения
+    delete[] array; // Freeing up memory
+    array = nullptr; // Setting the pointer to nullptr to prevent double deallocation
 }
 
 template <typename T>
@@ -18,18 +18,18 @@ void Vector<T>::PushBack(T value){
         capacity *= 2;
         T* new_array = new T[capacity];
 
-        // Копируем старые элементы в новый массив
+        // Copying old elements to a new array
         for (int i = 0; i < size; ++i) {
             new_array[i] = array[i];
         }
 
-        // Освобождаем старый массив
+        // Frees old array
         delete[] array;
         array = new_array;
     }
 
-    // Добавляем новый элемент
-    array[size] = value; // Исправлено: используем size, а не size + 1
+    // Add new element
+    array[size] = value; 
     size++;
 }
 
@@ -41,14 +41,14 @@ bool Vector<T>::Empty(){
 
 template <typename T>
 T Vector<T>::Back(){
-    if (Empty()) { // Проверка на пустоту
+    if (Empty()) { // Empty check
         throw std::out_of_range("Vector is empty");
     }
     return array[size-1];
 }
 
 template <typename T>
-T& Vector<T>::operator[](int index) { // Константный оператор индексирования
+T& Vector<T>::operator[](int index) { 
     if (index < 0 || index >= size) {
         throw std::out_of_range("Index out of range");
     }

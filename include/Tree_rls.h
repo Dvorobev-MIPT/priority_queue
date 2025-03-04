@@ -53,71 +53,67 @@
             if (BalanceFactor(root->left) > 0) return RightBigTurn(root);
             else return RightTurn(root);
         }
-    //    root->left = Balance(root->left);
-    //    root->right = Balance(root->right);
+
         return root;
     }
 
     template <typename T>
     Node<T>* Tree<T>::Insert(Node<T>* root, T key) {
-        // Стек для хранения узлов
-        Vector<Node<T>*> nodeStack;
+        Vector<Node<T>*> node_stack;    // Stack for storing nodes
         Node<T>* current = root;
 
-        // Поиск места для вставки
+        // Search for a place to insert
         while (current) {
-            nodeStack.PushBack(current);
+            node_stack.PushBack(current);
             if (key < current->value) {
                 current = current->left;
-            } else {
+            } 
+            else if (key > current->value){
                 current = current->right;
             }
-        }
-
-        // Вставка нового узла
-        Node<T>* newNode = new Node<T>(key);
-        if (nodeStack.Empty()) {
-            tree_root = newNode;
-            return newNode; // Дерево было пустым
-        }
-
-        Node<T>* parent = nodeStack.Back();
-        if (parent){
-        if (key < parent->value) {
-            parent->left = newNode;
-        } else {
-            parent->right = newNode;
-        }
-        }
-
-        // Обновляем высоты и проверяем балансировку
-        for (int i = nodeStack.Size() - 1; i >= 0; --i) {
-            Node<T>* node = nodeStack[i];
-
-            // Обновляем высоту узла
-            HeightCorrect(node);
-
-            // Получаем баланс узла
-            Node<T>* balancedNode = Balance(node); // Изменил имя переменной на balancedNode
-            // Если это не корень, обновляем ссылку родителя
-            if (i > 0) {
-                Node<T>* parent = nodeStack[i - 1];
-                if (balancedNode->value < parent->value) {
-                    parent->left = balancedNode;
-                } else {
-                    parent->right = balancedNode;
-                }
-            } else {
-                // Если это корень, обновляем root
-                root = balancedNode;
+            else {
+                return root;
             }
         }
 
-        // Удаление newNode здесь не нужно, так как он уже вставлен в дерево
-        // delete[] newNode; // Удаляем эту строку
+        //  Insert new node
+        Node<T>* new_node = new Node<T>(key);
+        if (node_stack.Empty()) {
+            tree_root = new_node;
+            return new_node;            // Make  new node if tree - empty
+        }
 
-        // Обновляем высоту корня
-        HeightCorrect(root);
+        Node<T>* parent = node_stack.Back();
+        if (parent){
+        if (key < parent->value) {
+            parent->left = new_node;
+        } 
+        else {
+            parent->right = new_node;
+        }
+        }
+
+        // Updates the heights and check the balancing
+        for (int i = node_stack.Size() - 1; i >= 0; --i) {
+            Node<T>* node = node_stack[i];
+
+            HeightCorrect(node);        // Update node height
+
+            node = Balance(node);       // Ballancing node
+            // If this is not the root, update the parent link.
+            if (i > 0) {
+                Node<T>* parent = node_stack[i - 1];
+                if (node->value < parent->value) {
+                    parent->left = node;
+                } else {
+                    parent->right = node;
+                }
+            } else {
+                root = node;            // If this is the root, update the root
+            }
+        }
+
+        HeightCorrect(root);            // Update node height
         tree_root = root;
         return root;
     }
@@ -125,41 +121,39 @@
     template <typename T>
     Node<T>* Tree<T>::Pop(Node<T>* root, T value) {
         if (root == nullptr) {
-            return nullptr; // Узел не найден
+            return nullptr;             // If node not found -> return nptr
         }
 
-        // Ищем узел для удаления
+        // Find node for pop
         if (value < root->value) {
-            root->left = Pop(root->left, value); // Ищем в левом поддереве
+            root->left = Pop(root->left, value);        // Find in left subtree
         } 
         else if (value > root->value) {
-            root->right = Pop(root->right, value); // Ищем в правом поддереве
+            root->right = Pop(root->right, value);      // Find in right subtree
         } 
         else {
-            // Узел найден, удаляем его
+            // If node found, delete node
             if (root->left == nullptr) {
-                Node<T>* temp = root->right; // Сохраняем правое поддерево
-                //delete root; // Удаляем узел
-                return temp; // Возвращаем правое поддерево
+                return root->right;                     // Return right subtree
             } 
             else if (root->right == nullptr) {
-                Node<T>* temp = root->left; // Сохраняем левое поддерево
-                //delete root; // Удаляем узел
-                return temp; // Возвращаем левое поддерево
+                return root->left;                      // Return right subtree
             } 
             else {
-                // Узел с двумя дочерними узлами: найти минимальный узел из правого поддерева
-                Node<T>* temp = GetMin(root->right); // Получаем минимальный узел из правого поддерева
+                // If node have 2 subnode
+                Node<T>* temp = GetMin(root->right);    // Get min node from right subtree
                 if (temp != nullptr) {
-                    root->value = temp->value; // Заменяем значение
-                    root->right = Pop(root->right, temp->value); // Удаляем узел с минимальным значением
+                    root->value = temp->value;          // Replace root valude
+                    root->right = Pop(root->right, temp->value); // Delete node with min value
                 }
             }
         }
 
-        // Обновляем высоту узла и балансируем дерево
+        // Updating the node height and balancing the tree
         HeightCorrect(root);
-        return Balance(root); // Балансируем после удаления
+        root = Balance(root);
+        tree_root = root;
+        return root; 
     }
 
 
@@ -186,18 +180,18 @@
     template <typename T>
     int Tree<T>::NumberOfSegmentElements(Node<T>* elem, T min, T max) {
         if (elem == nullptr) {
-            return 0; // Если узел пустой, возвращаем 0
+            return 0; // If node is empty, returns 0;
         }
         int count = 0;
-        // Проверяем левое поддерево
+        // Checking the left subtree
         if (elem->value > min) {
             count += NumberOfSegmentElements(elem->left, min, max);
         }
-        // Проверяем текущее значение
+        // Checking the current value
         if (elem->value >= min && elem->value <= max) {
             count += 1;
         }
-        // Проверяем правое поддерево
+        // Checking the right subtree
         if (elem->value < max) {
             count += NumberOfSegmentElements(elem->right, min, max);
         }
@@ -208,24 +202,19 @@
     template <typename T>
     void Tree<T>::DeleteTree(Node<T>* node){
         if (node != nullptr) {
-            // Рекурсивно удаляем левое и правое поддеревья
-            if (node->left){
+            // Recursively deleting the left and right subtrees
+            if (node->left != nullptr){
                 DeleteTree(node->left);
             }
-            if (node->right){
+            if (node->right != nullptr){
                 DeleteTree(node->right);
             }
-            delete node; // Освобождаем память для текущего узла
-            node = nullptr; // Установите указатель на nullptr после удаления
+            delete node;
         }
+        tree_root = nullptr;
     }
 
-    /*
-    template <typename T>
-    Tree<T>::~Tree(){
-        DeleteTree(tree_root);
-    }
-    */
+
     template <typename T>
     Node<T>* Tree<T>::Find(Node<T>* root, T value){
         if (!root){
@@ -244,15 +233,21 @@
 
     template <typename T>
     Node<T>* Tree<T>::GetMin(Node<T>* root){
-        while (root && root->left != nullptr) {
+        if (root == nullptr){
+            return nullptr;
+        }
+        while (root->left){
             root = root->left;
         }
         return root;
     }
-
+    
     template <typename T>
     Node<T>* Tree<T>::GetMax(Node<T>* root){
-        while (root && root->right != nullptr) {
+        if (root == nullptr){
+            return nullptr;
+        }
+        while (root->right){
             root = root->right;
         }
         return root;
@@ -261,7 +256,7 @@
     template <typename T>
     void Tree<T>::PrintTree(Node<T>* root){
         if (root == nullptr) {
-            return; // Если узел пустой, просто выходим
+            return; // If node is empty -> return (break)
         }
         PrintTree(root->left);
         std::cout << root->value << " ";
@@ -271,7 +266,7 @@
     template <typename T>
     Node<T>* Tree<T>::Merge(Node<T>* root, Node<T>* other) {
         if (other == nullptr) {
-            return root; // Приведение к неконстантному указателю
+            return root; // If node is nptr -> return nptr
         }
         root = Merge(root, other->left);
         root = Insert(root, other->value);
@@ -279,11 +274,10 @@
         return root;
     }
 
-    /*
+    
     template <typename T>
     Tree<T>::~Tree(){
         DeleteTree(tree_root);
-        tree_root = nullptr;   
     }
-*/
+
     #endif  

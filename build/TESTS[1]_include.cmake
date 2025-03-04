@@ -1,5 +1,0 @@
-if(EXISTS "/home/user/Документы/GitHub/priority_queue/build/TESTS[1]_tests.cmake")
-  include("/home/user/Документы/GitHub/priority_queue/build/TESTS[1]_tests.cmake")
-else()
-  add_test(TESTS_NOT_BUILT TESTS_NOT_BUILT)
-endif()

@@ -58,7 +58,7 @@
     }
 
     template <typename T>
-    Node<T>* Tree<T>::Insert(Node<T>* root, T key) {
+    Node<T>* Tree<T>::Insert(Node<T>* root, T const &key){
         Vector<Node<T>*> node_stack;    // Stack for storing nodes
         Node<T>* current = root;
 
@@ -94,7 +94,7 @@
         }
 
         // Updates the heights and check the balancing
-        for (int i = node_stack.Size() - 1; i >= 0; --i) {
+        for (int i = node_stack.Size() - 1; i >= 0; --i){
             Node<T>* node = node_stack[i];
 
             HeightCorrect(node);        // Update node height
@@ -119,7 +119,7 @@
     }
 
     template <typename T>
-    Node<T>* Tree<T>::Pop(Node<T>* root, T value) {
+    Node<T>* Tree<T>::Pop(Node<T>* root, T const &value){
         if (root == nullptr) {
             return nullptr;             // If node not found -> return nptr
         }
@@ -159,17 +159,17 @@
 
 
     template <typename T>
-    int Tree<T>::BalanceFactor(Node<T>* node){
+    int Tree<T>::BalanceFactor(Node<T>* node) const {
         return (Height(node->right) - Height(node->left));
     }
 
     template <typename T>
-    int Tree<T>::Height(Node<T>* node){
+    int Tree<T>::Height(Node<T>* node) const {
         return (node ? node->height : 0);
     }
 
     template <typename T>
-    void Tree<T>::HeightCorrect(Node<T>* node){
+    void Tree<T>::HeightCorrect(Node<T>* node) const {
         if (node != nullptr){
             int left_height = Height(node->left);
             int right_height = Height(node->right);
@@ -178,7 +178,7 @@
     }
 
     template <typename T>
-    int Tree<T>::NumberOfSegmentElements(Node<T>* elem, T min, T max) {
+    int Tree<T>::NumberOfSegmentElements(Node<T>* elem, T const &min, T const &max) const {
         if (elem == nullptr) {
             return 0; // If node is empty, returns 0;
         }
@@ -216,7 +216,7 @@
 
 
     template <typename T>
-    Node<T>* Tree<T>::Find(Node<T>* root, T value){
+    Node<T>* Tree<T>::Find(Node<T>* root, T const &value) const {
         if (!root){
             return nullptr;
         }
@@ -232,7 +232,7 @@
     }
 
     template <typename T>
-    Node<T>* Tree<T>::GetMin(Node<T>* root){
+    Node<T>* Tree<T>::GetMin(Node<T>* root) const {
         if (root == nullptr){
             return nullptr;
         }
@@ -243,7 +243,7 @@
     }
     
     template <typename T>
-    Node<T>* Tree<T>::GetMax(Node<T>* root){
+    Node<T>* Tree<T>::GetMax(Node<T>* root) const {
         if (root == nullptr){
             return nullptr;
         }
@@ -254,7 +254,7 @@
     }
 
     template <typename T>
-    void Tree<T>::PrintTree(Node<T>* root){
+    void Tree<T>::PrintTree(Node<T>* root) const {
         if (root == nullptr) {
             return; // If node is empty -> return (break)
         }
@@ -264,7 +264,7 @@
     }
 
     template <typename T>
-    Node<T>* Tree<T>::Merge(Node<T>* root, Node<T>* other) {
+    Node<T>* Tree<T>::Merge(Node<T>* root, Node<T>* other){
         if (other == nullptr) {
             return root; // If node is nptr -> return nptr
         }

@@ -21,29 +21,29 @@ public:
 
     Node<T>* Balance(Node<T>* root);
 
-    Node<T>* Insert(Node<T>* root, T value);
+    Node<T>* Insert(Node<T>* root, T const &value);
     
-    Node<T>*  Pop(Node<T>* root, T value);
+    Node<T>*  Pop(Node<T>* root, T const &value);
 
-    int BalanceFactor(Node<T>* node);
+    int BalanceFactor(Node<T>* node) const;
 
-    int Height(Node<T>* node);
+    int Height(Node<T>* node) const;
 
-    void HeightCorrect(Node<T>* node);
+    void HeightCorrect(Node<T>* node) const;
 
-    int NumberOfSegmentElements(Node<T>* elem, T min, T max);
+    int NumberOfSegmentElements(Node<T>* elem, T const &min, T const &max) const;
 
     void DeleteTree(Node<T>* node);
 
     ~Tree();
 
-    Node<T>* Find(Node<T>* root, T value);
+    Node<T>* Find(Node<T>* root, T const &value) const;
 
-    Node<T>* GetMin(Node<T>* root);
+    Node<T>* GetMin(Node<T>* root) const;
 
-    Node<T>* GetMax(Node<T>* root);
+    Node<T>* GetMax(Node<T>* root) const;
 
-    void PrintTree(Node<T>* elem);
+    void PrintTree(Node<T>* elem) const;
 
     Node<T>* Merge(Node<T>* root, Node<T>* other);
 

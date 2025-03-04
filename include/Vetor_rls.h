@@ -1,6 +1,8 @@
 #ifndef VECTOR_RLS
 #define VECTOR_RLS
 
+// realisation
+
 template <typename T>
 Vector<T>::Vector() : size(0), capacity(1) {
     array = new T[capacity];
@@ -13,7 +15,7 @@ Vector<T>::~Vector(){
 }
 
 template <typename T>
-void Vector<T>::PushBack(T value){
+void Vector<T>::PushBack(T const &value){
     if (size >= capacity){
         capacity *= 2;
         T* new_array = new T[capacity];
@@ -34,13 +36,13 @@ void Vector<T>::PushBack(T value){
 }
 
 template <typename T>
-bool Vector<T>::Empty(){
+bool Vector<T>::Empty() const {
     if (size == 0) return true;
     else return false;
 }
 
 template <typename T>
-T Vector<T>::Back(){
+T Vector<T>::Back() const {
     if (Empty()) { // Empty check
         throw std::out_of_range("Vector is empty");
     }
@@ -48,7 +50,7 @@ T Vector<T>::Back(){
 }
 
 template <typename T>
-T& Vector<T>::operator[](int index) { 
+T& Vector<T>::operator[](int const index) const { 
     if (index < 0 || index >= size) {
         throw std::out_of_range("Index out of range");
     }
@@ -56,7 +58,7 @@ T& Vector<T>::operator[](int index) {
 }
 
 template <typename T>
-int Vector<T>::Size(){
+int Vector<T>::Size() const {
     return size;
 }
 

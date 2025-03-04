@@ -9,24 +9,24 @@ template <typename T>
 PriorityQueue<T>::PriorityQueue(): root(nullptr), size(0){}
 
 template <typename T>
-void PriorityQueue<T>::Push(T elem){    // Inserts element and sorts the underlying container
+void PriorityQueue<T>::Push(T const &elem){    // Inserts element and sorts the underlying container
     root = tree.Insert(root, elem);
     size++;
 }        
     
 template <typename T>
-Node<T>* PriorityQueue<T>::Top(){       // Accesses the top element
+Node<T>* PriorityQueue<T>::Top() const {       // Accesses the top element
     return tree.GetMax(root);
 }
 
 template <typename T>
-bool PriorityQueue<T>::Empty(){         // Checks whether the container adaptor is empty
+bool PriorityQueue<T>::Empty() const {         // Checks whether the container adaptor is empty
     if (size == 0) return true;
     else return false;
 }
 
 template <typename T>
-int PriorityQueue<T>::Size(){           // Returns the number of elements
+int PriorityQueue<T>::Size() const {           // Returns the number of elements
     return size;
 }
 
@@ -54,7 +54,7 @@ void PriorityQueue<T>::Merge(PriorityQueue& other) {
     }
 }
 template <typename T>
-void PriorityQueue<T>::Print(){
+void PriorityQueue<T>::Print() const {
     if (root != nullptr){
         tree.PrintTree(root);
         std::cout << std::endl;
@@ -62,7 +62,7 @@ void PriorityQueue<T>::Print(){
 }
 
 template <typename T>
-Node<T>* PriorityQueue<T>::Find(T value){
+Node<T>* PriorityQueue<T>::Find(T const &value) const {
     if (root != nullptr){
         return tree.Find(root, value);
     }
@@ -70,7 +70,7 @@ Node<T>* PriorityQueue<T>::Find(T value){
 }
 
 template <typename T>
-bool PriorityQueue<T>::Contains(T value){
+bool PriorityQueue<T>::Contains(T const &value) const {
     if (tree.Find(root, value) == nullptr) return false;
     else return true;
 }

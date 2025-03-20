@@ -9,11 +9,17 @@ private:
     int capacity;   // Vector capacity
 public:
     Vector();
+    
     ~Vector();
+    
     void PushBack(T const &value);
+    
     bool Empty() const;
+    
     T Back() const;
+    
     T& operator[](int const index) const; // Constant indexing operator (etc Vector[i])
+    
     int Size() const;
 };
 

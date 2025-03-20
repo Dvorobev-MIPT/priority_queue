@@ -59,63 +59,16 @@
 
     template <typename T>
     Node<T>* Tree<T>::Insert(Node<T>* root, T const &key){
-        Vector<Node<T>*> node_stack;    // Stack for storing nodes
-        Node<T>* current = root;
-
-        // Search for a place to insert
-        while (current) {
-            node_stack.PushBack(current);
-            if (key < current->value) {
-                current = current->left;
-            } 
-            else if (key > current->value){
-                current = current->right;
-            }
-            else {
-                return root;
-            }
+        if (root == nullptr) {
+            return new Node<T>(key); // Allocate new node
         }
-
-        //  Insert new node
-        Node<T>* new_node = new Node<T>(key);
-        if (node_stack.Empty()) {
-            tree_root = new_node;
-            return new_node;            // Make  new node if tree - empty
+        if (key < root->value) {
+            root->left = Insert(root->left, key);
+        } else {
+            root->right = Insert(root->right, key);
         }
-
-        Node<T>* parent = node_stack.Back();
-        if (parent){
-        if (key < parent->value) {
-            parent->left = new_node;
-        } 
-        else {
-            parent->right = new_node;
-        }
-        }
-
-        // Updates the heights and check the balancing
-        for (int i = node_stack.Size() - 1; i >= 0; --i){
-            Node<T>* node = node_stack[i];
-
-            HeightCorrect(node);        // Update node height
-
-            node = Balance(node);       // Ballancing node
-            // If this is not the root, update the parent link.
-            if (i > 0) {
-                Node<T>* parent = node_stack[i - 1];
-                if (node->value < parent->value) {
-                    parent->left = node;
-                } else {
-                    parent->right = node;
-                }
-            } else {
-                root = node;            // If this is the root, update the root
-            }
-        }
-
-        HeightCorrect(root);            // Update node height
-        tree_root = root;
-        return root;
+        tree_root = Balance(root); // Balance the tree
+        return tree_root;
     }
 
     template <typename T>
@@ -134,10 +87,14 @@
         else {
             // If node found, delete node
             if (root->left == nullptr) {
-                return root->right;                     // Return right subtree
+                Node<T>* temp = root->right;
+                delete root;
+                return temp;                     // Return right subtree
             } 
             else if (root->right == nullptr) {
-                return root->left;                      // Return right subtree
+                Node<T>* temp = root->right;
+                delete root;
+                return temp;                    // Return right subtree
             } 
             else {
                 // If node have 2 subnode

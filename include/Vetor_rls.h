@@ -12,6 +12,8 @@ template <typename T>
 Vector<T>::~Vector(){
     delete[] array; // Freeing up memory
     array = nullptr; // Setting the pointer to nullptr to prevent double deallocation
+    size = 0;
+    capacity = 1;
 }
 
 template <typename T>
